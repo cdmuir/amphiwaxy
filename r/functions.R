@@ -35,3 +35,53 @@ calc_abu = function(.d) {
     mutate(name = str_remove(name, "_µg_per_[0-9a-z]*")) |>
     rename(abu_abaxial = abaxial, abu_adaxial = adaxial)
 }
+
+# Prepare new data for posterior predictions
+prepare_new_data = function(.fit, .species) {
+  
+  .fit$data |>
+    summarize(
+      min_asl = min(asl), max_asl = max(asl), 
+      .by = c("leaf_age", "light_treatment")
+    ) |>
+    mutate(species = .species, range_asl = max_asl - min_asl) |>
+    crossing(.i = seq(0, 1, 0.01)) |>
+    mutate(asl = min_asl + .i * range_asl)
+  
+}
+
+# Prepare posterior predictions
+prepare_post_pred = function(.fit, .newdata, .response) {
+  
+  .response = switch(.response, dallcomp = "dallcomp", cratiom1 = "cratiom1")
+  
+  if (.response == "dallcomp") {
+    ret = .fit |>
+      as_draws_df() |>
+      crossing(.newdata) |>
+      mutate(
+        intercept = b_dallcomp_Intercept +
+          b_dallcomp_leaf_agemature * (leaf_age == "mature") +
+          b_dallcomp_leaf_ageold * (leaf_age == "old") +
+          b_dallcomp_light_treatmenthigh * (light_treatment == "high"),
+        slope = b_dallcomp_asl,
+        d_all_comp = intercept + slope * asl
+      )
+  }
+  
+  if (.response == "cratiom1") {
+    ret = .fit |>
+      as_draws_df() |>
+      crossing(.newdata) |>
+      mutate(
+        intercept = b_cratiom1_Intercept +
+          b_cratiom1_leaf_agemature * (leaf_age == "mature") +
+          b_cratiom1_leaf_ageold * (leaf_age == "old") +
+          b_cratiom1_light_treatmenthigh * (light_treatment == "high"),
+        slope = b_cratiom1_asl,
+        c_ratio_m1 = intercept + slope * asl
+      )
+  }
+  
+  return(ret)
+}
