@@ -6,10 +6,12 @@ Amphistomy: stomata patterning inferred from 13C content and leaf–side specifi
 
 ## Authors
 
-Balzhan Askanbayeva$^1$, Jitka Janová$^1$, Jiří Kubásek$^1$, Lukas Schreiber$^2$, Christopher D. Muir$^3$, Jiří Šantrůček$^1$
+Balzhan Askanbayeva $^1$, Jitka Janová $^1$, Jiří Kubásek $^1$, Lukas Schreiber $^2$, Christopher D. Muir $^3$, Jiří Šantrůček $^1$
 
 $^1$ Faculty of Science, Department of Experimental Plant Biology, University of South Bohemia, Branišovská 31, 370 05 České Budějovice, Czech Republic
+
 $^2$ Institute of Cellular and Molecular Botany, University of Bonn, Kirschallee 1, 53115 Bonn, Germany
+
 $^3$ Department of Botany, University of Wisconsin, 143 Lincoln Drive Madison, Wisconsin, USA 53711
 
 ## Contents
