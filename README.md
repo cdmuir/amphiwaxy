@@ -38,7 +38,7 @@ source("r/install-packages.R")
 
 To fit **brms** model, set up [**cmdstanr**](https://mc-stan.org/cmdstanr/).
 
-## Downloading data and code 
+## Downloading repository and running code 
 
 1. Download or clone this repository to your machine.
 
