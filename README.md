@@ -28,7 +28,7 @@ This repository has the following file folders:
 
 To run code and render manuscript:
 
-- [*R*](https://cran.r-project.org/) version >4.3.0 and [*RStudio*](https://www.rstudio.com/) (recommended)
+- [*R*](https://cran.r-project.org/) version >4.3.0 and [*RStudio*](https://www.posit.co/) (recommended)
 
 Before running scripts, you'll need to install the following *R* packages:
 
@@ -46,7 +46,7 @@ To fit **brms** model, set up [**cmdstanr**](https://mc-stan.org/cmdstanr/).
 git clone git@github.com:cdmuir/amphiwaxy.git
 ```
 
-2. Open `amphiwaxy.Rproj` in [RStudio](https://www.rstudio.com/)
+2. Open `amphiwaxy.Rproj` in [RStudio](https://www.posit.co/)
 
 3. Run all code.
 
