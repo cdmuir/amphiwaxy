@@ -2,7 +2,7 @@
 
 This repository contains source code associated with the manuscript:
 
-Amphistomy: stomata patterning inferred from 13C content and leaf–side specific deposition of epicuticular wax. In review at *Annals of Botany*.
+Amphistomy: stomata patterning inferred from $^{13}$C content and leaf–side specific deposition of epicuticular wax. In review at *Annals of Botany*.
 
 ## Authors
 
