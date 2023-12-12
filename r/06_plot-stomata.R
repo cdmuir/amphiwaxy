@@ -10,7 +10,8 @@ stomata = read_rds("processed-data/stomata.rds") |>
     n = n(),
     .by = c("species", "light_treatment", "plant_rep", "leaf_age", "leaf_rep",
             "surface")
-  )
+  ) |>
+  factor_vars()
 
 ggplot(stomata, aes(light_treatment, stomatal_density_mm2)) +
   facet_grid(leaf_age ~ species) +
@@ -31,6 +32,7 @@ ggplot(stomata, aes(light_treatment, stomatal_density_mm2)) +
   theme(legend.position = "none")
 
 ggsave("figures/fig3a.pdf", width = 3.25, height = 4)
+ggsave("figures/fig3a.jpg", width = 3.25, height = 4)
 
 stomata |>
   pivot_wider(values_from = stomatal_density_mm2, names_from = surface) |>
@@ -54,3 +56,4 @@ stomata |>
   theme(legend.position = "none")
 
 ggsave("figures/fig3b.pdf", width = 3.25, height = 4)
+ggsave("figures/fig3b.jpg", width = 3.25, height = 4)

@@ -3,7 +3,8 @@ factor_vars = function(.d) {
   
   .d |>
     mutate(
-      species = factor(species, levels = c("paprika", "broccoli")),
+      species = fct_recode(species, pepper = "paprika", broccoli = "broccoli"),
+      species = factor(species, levels = c("pepper", "broccoli")),
       light_treatment = factor(light_treatment, levels = c("low", "high")),
       leaf_age = factor(leaf_age, levels = c("young", "mature", "old"))
     )
@@ -37,51 +38,39 @@ calc_abu = function(.d) {
 }
 
 # Prepare new data for posterior predictions
-prepare_new_data = function(.fit, .species) {
+prepare_new_data = function(.fit, .species, .explanatory) {
+  
+  .explanatory = switch(.explanatory, d_all_comp = "d_all_comp", c_ratio_m1 = "c_ratio_m1")
   
   .fit$data |>
     summarize(
-      min_asl = min(asl), max_asl = max(asl), 
+      min = min(.data[[.explanatory]]), 
+      max = max(.data[[.explanatory]]), 
       .by = c("leaf_age", "light_treatment")
     ) |>
-    mutate(species = .species, range_asl = max_asl - min_asl) |>
+    mutate(species = .species, range = max - min) |>
     crossing(.i = seq(0, 1, 0.01)) |>
-    mutate(asl = min_asl + .i * range_asl)
+    mutate(x = min + .i * range)
   
 }
 
 # Prepare posterior predictions
-prepare_post_pred = function(.fit, .newdata, .response) {
+prepare_post_pred = function(.fit, .newdata, .explanatory) {
   
-  .response = switch(.response, dallcomp = "dallcomp", cratiom1 = "cratiom1")
+  .explanatory = switch(.explanatory, d_all_comp = "d_all_comp", c_ratio_m1 = "c_ratio_m1")
   
-  if (.response == "dallcomp") {
-    ret = .fit |>
-      as_draws_df() |>
-      crossing(.newdata) |>
-      mutate(
-        intercept = b_dallcomp_Intercept +
-          b_dallcomp_leaf_agemature * (leaf_age == "mature") +
-          b_dallcomp_leaf_ageold * (leaf_age == "old") +
-          b_dallcomp_light_treatmenthigh * (light_treatment == "high"),
-        slope = b_dallcomp_asl,
-        d_all_comp = intercept + slope * asl
-      )
-  }
+  ret = .fit |>
+    as_draws_df() |>
+    crossing(.newdata) |>
+    mutate(
+      intercept = b_asl_Intercept +
+        b_asl_leaf_agemature * (leaf_age == "mature") +
+        b_asl_leaf_ageold * (leaf_age == "old") +
+        b_asl_light_treatmenthigh * (light_treatment == "high"),
+      slope = !!sym(glue("b_asl_{.explanatory}")),
+      asl = intercept + slope * x
+    )
   
-  if (.response == "cratiom1") {
-    ret = .fit |>
-      as_draws_df() |>
-      crossing(.newdata) |>
-      mutate(
-        intercept = b_cratiom1_Intercept +
-          b_cratiom1_leaf_agemature * (leaf_age == "mature") +
-          b_cratiom1_leaf_ageold * (leaf_age == "old") +
-          b_cratiom1_light_treatmenthigh * (light_treatment == "high"),
-        slope = b_cratiom1_asl,
-        c_ratio_m1 = intercept + slope * asl
-      )
-  }
+    return(ret)
   
-  return(ret)
 }
