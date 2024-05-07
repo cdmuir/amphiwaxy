@@ -2,7 +2,7 @@
 
 This repository contains source code associated with the manuscript:
 
-Amphistomy: optimality in stomata patterning inferred from $^{13}$C content and leaf–side specific deposition of epicuticular wax. Accepted at *Annals of Botany*.
+Amphistomy: optimality in stomata patterning inferred from $^{13}\text{C}$ content and leaf–side specific deposition of epicuticular wax. Accepted at *Annals of Botany*.
 
 ## Authors
 
