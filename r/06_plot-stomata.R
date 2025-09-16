@@ -2,7 +2,6 @@ source("r/header.R")
 
 # Figure 3A: Species and light versus SD
 # I think area for count is 0.817 mm^2 based on Fig. 3 caption, but using 1-mm2 matches the figure
-
 stomata = read_rds("processed-data/stomata.rds") |>
   filter(!is.na(stomatal_density_mm2)) |>
   summarize(
@@ -21,7 +20,7 @@ ggplot(stomata, aes(light_treatment, stomatal_density_mm2)) +
     position = position_jitterdodge(jitter.width = 0.1, dodge.width = 0.5)
   ) +
   stat_summary(
-    geom = "pointrange", 
+    geom = "pointrange", fun.data = mean_se,
     mapping = aes(fill = light_treatment, shape = surface), 
     color = "black", position = position_dodge(width = 1)
   ) +
@@ -45,7 +44,7 @@ stomata |>
     position = position_jitter(width = 0.05)
   ) +
   stat_summary(
-    geom = "pointrange", 
+    geom = "pointrange", fun.data = mean_se,
     mapping = aes(fill = light_treatment), 
     shape = 21, color = "black", position = position_nudge(x = 0.1)
   ) +
